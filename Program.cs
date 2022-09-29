@@ -3,17 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var host = builder.Configuration["DBHOST"] ?? "localhost";
-var port = builder.Configuration["DBPORT"] ?? "3333";
-var password = builder.Configuration["DBPASSWORD"] ?? "secret";
-var db = builder.Configuration["DBNAME"] ?? "HealthDB";
+// var host = builder.Configuration["DBHOST"] ?? "localhost";
+// var port = builder.Configuration["DBPORT"] ?? "3333";
+// var password = builder.Configuration["DBPASSWORD"] ?? "secret";
+// var db = builder.Configuration["DBNAME"] ?? "HealthDB";
 
-string connectionString = $"server={host}; userid=root; pwd={password};"
-        + $"port={port}; database={db};SslMode=none;allowpublickeyretrieval=True;";
+// string connectionString = $"server={host}; userid=root; pwd={password};"
+//         + $"port={port}; database={db};SslMode=none;allowpublickeyretrieval=True;";
 
-var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
+// var serverVersion = new MySqlServerVersion(new Version(8, 0, 0));
 
-builder.Services.AddDbContext<HealthContext>(options => options.UseMySql(connectionString, serverVersion));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<HealthContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );

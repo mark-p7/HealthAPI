@@ -3,3 +3,4 @@
 /dist
 
 appsettings.json
+appsettings.Development.json
